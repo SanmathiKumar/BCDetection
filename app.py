@@ -9,10 +9,7 @@ from flask import Flask, render_template, request
 from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
 
-global model
-
 app = Flask(__name__)
-
 
 def load_image(img_path_):
     img_ = image.load_img(img_path_, target_size=(50, 50))
@@ -50,7 +47,7 @@ def main():
 
 @app.route("/about")
 def about_page():
-    return "Please subscribe  Artificial Intelligence Hub..!!!"
+    return "This is the Breast Cancer Detection Web Application!"
 
 
 @app.route("/submit", methods=['GET', 'POST'])
@@ -68,6 +65,7 @@ def get_output():
 
 
 if __name__ == "__main__":
+    global model
     # Load the model
     model = load_model('mymodel.h5')
     print("Model is loaded")
