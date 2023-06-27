@@ -31,8 +31,9 @@
   </form>
 
 	{% if prediction %}
+  <h3> Uploaded Image </h3>
   <img src="{{img_path}}" height="150px" width="150px">
-	<h2> Predicted Class   : <i> {{prediction}} </i></h2>
+	<h2><b> Predicted Class </b> : <i> {{prediction}} </i></h2>
 
 	{% endif %}
 

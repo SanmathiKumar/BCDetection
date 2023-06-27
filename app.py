@@ -14,19 +14,20 @@ global model
 app = Flask(__name__)
 
 
-def load_image(img_path):
-    img_ = image.load_img(img_path, target_size=(50, 50))
+def load_image(img_path_):
+    img_ = image.load_img(img_path_, target_size=(50, 50))
     img_tensor = image.img_to_array(img_)  # (height, width, channels)
     # img_tensor = img_tensor.reshape(1, 50, 50, 3)
     img_tensor = np.expand_dims(img_tensor,
-                                axis=0)  # (1, height, width, channels), add a dimension because the model expects this shape: (batch_size, height, width, channels)
+                                axis=0)  # (1, height, width, channels), add a dimension because the model expects
+    # this shape: (batch_size, height, width, channels)
     img_tensor /= 255.  # imshow expects values in the range [0, 1]
 
     return img_tensor
 
 
-def prediction(img_path):
-    new_image = load_image(img_path)
+def prediction(img_path_):
+    new_image = load_image(img_path_)
 
     pred = model.predict(new_image)
 
@@ -36,9 +37,9 @@ def prediction(img_path):
     THRESHOLD_VALUE = float(8.09e-11)
 
     if predicted_value > THRESHOLD_VALUE:
-        return "Class 0"
+        return "Class 0 - No Cancer!"
     else:
-        return "Class 1"
+        return "Class 1 - Possibility of having Cancer!"
 
 
 # routes
@@ -54,6 +55,7 @@ def about_page():
 
 @app.route("/submit", methods=['GET', 'POST'])
 def get_output():
+    global img_path, p
     if request.method == 'POST':
         img = request.files['my_image']
 
