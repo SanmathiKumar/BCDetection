@@ -26,6 +26,10 @@ def load_image(img_path_):
 def prediction(img_path_):
     new_image = load_image(img_path_)
 
+    # Load the model
+    model = load_model('mymodel.h5')
+    print("Model is loaded")
+
     pred = model.predict(new_image)
 
     labels = np.array(pred)
@@ -65,10 +69,5 @@ def get_output():
 
 
 if __name__ == "__main__":
-    global model
-    # Load the model
-    model = load_model('mymodel.h5')
-    print("Model is loaded")
-
     # app.debug = True
     app.run(debug=True)
