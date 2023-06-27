@@ -15,8 +15,9 @@ global model
 
 
 def load_image(img_path):
-    img = image.load_img(img_path, target_size=(224, 224))
-    img_tensor = image.img_to_array(img)  # (height, width, channels)
+    img_ = image.load_img(img_path, target_size=(50, 50))
+    img_tensor = image.img_to_array(img_)  # (height, width, channels)
+    # img_tensor = img_tensor.reshape(1, 50, 50, 3)
     img_tensor = np.expand_dims(img_tensor,
                                 axis=0)  # (1, height, width, channels), add a dimension because the model expects this shape: (batch_size, height, width, channels)
     img_tensor /= 255.  # imshow expects values in the range [0, 1]
@@ -29,35 +30,28 @@ def prediction(img_path):
 
     pred = model.predict(new_image)
 
-    print(pred)
-
     labels = np.array(pred)
-    labels[labels >= 0.6] = 1
-    labels[labels < 0.6] = 0
+    predicted_value = labels[0][1]
+    print(predicted_value)
+    THRESHOLD_VALUE = float(8.09e-11)
 
-    print(labels)
-    final = np.array(labels)
-
-    if final[0][0] == 1:
-        return "Bad"
+    if predicted_value > THRESHOLD_VALUE:
+        return "Class 0"
     else:
-        return "Good"
+        return "Class 1"
 
 
 if __name__ == "__main__":
     # Load the model
-    model = load_model('model.h5')
+    model = load_model('mymodel.h5')
     print("Model is loaded")
 
     # Model prediction
-    image_path = r"C:\Users\sanma\PycharmProjects\BCDetection\static\bad (24)k.jpeg"
-    img = load_image(image_path)
-    k = model.predict(img)
-    labels = np.array(k)
+    image_path = r"C:\Users\sanma\PycharmProjects\BCDetection\Test_images\0\10276_idx5_x251_y1201_class0.png"
+    pres_class = prediction(image_path)
 
-    labels[labels >= 0.6] = 1
-    labels[labels < 0.6] = 0
+    print(pres_class)
 
-    print(k)
-    if labels[labels > 0.7]:
-        print("Gooddd")
+
+
+
